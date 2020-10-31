@@ -15,8 +15,10 @@ after_success:
   - docker build -t jasperkennis/multi-nginx ./nginx
   - docker build -t jasperkennis/multi-server ./server
   - docker build -t jasperkennis/multi-worker ./worker
+
   # Login using credetials
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
   # Push all images
   - docker push jasperkennis/multi-client
   - docker push jasperkennis/multi-nginx

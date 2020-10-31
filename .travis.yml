@@ -10,11 +10,14 @@ script:
   - docker run -e CI=true jasperkennis/client-tests npm test
 
 after_success:
+  # Create all images
   - docker build -t jasperkennis/multi-client ./client
   - docker build -t jasperkennis/multi-nginx ./nginx
   - docker build -t jasperkennis/multi-server ./server
   - docker build -t jasperkennis/multi-worker ./worker
+  # Login using credetials
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push all images
   - docker push jasperkennis/multi-client
   - docker push jasperkennis/multi-nginx
   - docker push jasperkennis/multi-server

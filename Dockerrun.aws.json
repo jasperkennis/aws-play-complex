@@ -1,0 +1,34 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "essential": false,
+      "hostname": "client",
+      "image": "jasperkennis/multi-client",
+      "name": "client"
+    },
+    {
+      "essential": true,
+      "image": "jasperkennis/multi-nginx",
+      "links": ["client", "server"],
+      "name": "nginx",
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ]
+    },
+    {
+      "essential": false,
+      "hostname": "api",
+      "image": "jasperkennis/multi-server",
+      "name": "server"
+    },
+    {
+      "essential": false,
+      "image": "jasperkennis/multi-worker",
+      "name": "worker"
+    }
+  ]
+}

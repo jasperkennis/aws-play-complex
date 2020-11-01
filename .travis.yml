@@ -1,4 +1,6 @@
-sudo: required
+dist: xenial
+os: linux
+language: ruby
 
 services:
   - docker
@@ -30,7 +32,7 @@ deploy:
   region: 'eu-central-1'
   app: 'multi-docker-2'
   env: 'MultiDocker2-env'
-  bucket_name: 'elasticbeanstalk-eu-central-1-874082075030'
+  bucket: 'elasticbeanstalk-eu-central-1-874082075030'
   bucket_path: 'docker-multi'
   on:
     branch: master

@@ -5,12 +5,14 @@
       "essential": false,
       "hostname": "client",
       "image": "jasperkennis/multi-client",
+      "memory": 128,
       "name": "client"
     },
     {
       "essential": true,
       "image": "jasperkennis/multi-nginx",
       "links": ["client", "server"],
+      "memory": 128,
       "name": "nginx",
       "portMappings": [
         {
@@ -23,11 +25,13 @@
       "essential": false,
       "hostname": "api",
       "image": "jasperkennis/multi-server",
+      "memory": 128,
       "name": "server"
     },
     {
       "essential": false,
       "image": "jasperkennis/multi-worker",
+      "memory": 128,
       "name": "worker"
     }
   ]

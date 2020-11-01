@@ -1,0 +1,38 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t jasperkennis/client-tests -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true jasperkennis/client-tests npm test
+
+after_success:
+  # Create all images
+  - docker build -t jasperkennis/multi-client ./client
+  - docker build -t jasperkennis/multi-nginx ./nginx
+  - docker build -t jasperkennis/multi-server ./server
+  - docker build -t jasperkennis/multi-worker ./worker
+
+  # Login using credetials
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Push all images
+  - docker push jasperkennis/multi-client
+  - docker push jasperkennis/multi-nginx
+  - docker push jasperkennis/multi-server
+  - docker push jasperkennis/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'eu-central-1'
+  app: 'multi-docker'
+  env: 'MultiDocker-env'
+  bucket_name: 'elasticbeanstalk-eu-central-1-874082075030'
+  bucket_path: 'docker-multi'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
